@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EIP-7928: Block-Level Access Lists</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="badge">EIP-7928</div>
+                <h1>Block-Level Access Lists</h1>
+                <p class="subtitle">Unlock parallel transaction execution on Ethereum</p>
+                <div class="hero-buttons">
+                    <a href="#visualization" class="btn btn-primary">See How It Works</a>
+                    <a href="https://ethereum-magicians.org/t/eip-7928-block-level-access-lists/23337" target="_blank" class="btn btn-secondary">Join Discussion</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Visualization Section -->
+    <section id="visualization" class="visualization-section">
+        <div class="container">
+            <h2>From Sequential to Parallel</h2>
+            <p class="section-subtitle">See how EIP-7928 transforms transaction processing</p>
+            
+            <div class="viz-container">
+                <div class="viz-panel">
+                    <h3>Today: Sequential Processing</h3>
+                    <div class="sequential-viz" id="sequential-viz">
+                        <div class="timeline-container">
+                            <div class="processor-label">Single Core</div>
+                            <div class="timeline">
+                                <div class="tx-block" data-index="0">Tx 1</div>
+                                <div class="tx-block" data-index="1">Tx 2</div>
+                                <div class="tx-block" data-index="2">Tx 3</div>
+                                <div class="tx-block" data-index="3">Tx 4</div>
+                                <div class="tx-block" data-index="4">Tx 5</div>
+                                <div class="tx-block" data-index="5">Tx 6</div>
+                                <div class="tx-block" data-index="6">Tx 7</div>
+                                <div class="tx-block" data-index="7">Tx 8</div>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill sequential-progress"></div>
+                            </div>
+                        </div>
+                        <div class="time-display">
+                            <span class="time-label">Time:</span>
+                            <span class="time-value" id="sequential-time">0s</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="viz-panel">
+                    <h3>With EIP-7928: Parallel Processing</h3>
+                    <div class="parallel-viz" id="parallel-viz">
+                        <div class="cores-container">
+                            <div class="core-row">
+                                <div class="processor-label">Core 1</div>
+                                <div class="core-timeline">
+                                    <div class="tx-block" data-core="1" data-index="0">Tx 1</div>
+                                    <div class="tx-block" data-core="1" data-index="1">Tx 5</div>
+                                </div>
+                            </div>
+                            <div class="core-row">
+                                <div class="processor-label">Core 2</div>
+                                <div class="core-timeline">
+                                    <div class="tx-block" data-core="2" data-index="0">Tx 2</div>
+                                    <div class="tx-block" data-core="2" data-index="1">Tx 6</div>
+                                </div>
+                            </div>
+                            <div class="core-row">
+                                <div class="processor-label">Core 3</div>
+                                <div class="core-timeline">
+                                    <div class="tx-block" data-core="3" data-index="0">Tx 3</div>
+                                    <div class="tx-block" data-core="3" data-index="1">Tx 7</div>
+                                </div>
+                            </div>
+                            <div class="core-row">
+                                <div class="processor-label">Core 4</div>
+                                <div class="core-timeline">
+                                    <div class="tx-block" data-core="4" data-index="0">Tx 4</div>
+                                    <div class="tx-block" data-core="4" data-index="1">Tx 8</div>
+                                </div>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill parallel-progress"></div>
+                            </div>
+                        </div>
+                        <div class="time-display">
+                            <span class="time-label">Time:</span>
+                            <span class="time-value" id="parallel-time">0s</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="btn btn-animate" id="animate-btn">Animate Processing</button>
+        </div>
+    </section>
+
+    <!-- Key Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <h2>Key Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Parallel Execution</h3>
+                    <p>Execute multiple transactions simultaneously by knowing state dependencies upfront</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>State Transparency</h3>
+                    <p>Access lists reveal exactly which accounts and storage slots each transaction touches</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3>Faster Sync</h3>
+                    <p>Reconstruct state without executing transactions using post-execution values</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Enforced at Block Level</h3>
+                    <p>Mandatory access lists ensure complete and accurate state dependency information</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Client Progress Section -->
+    <section class="clients-section">
+        <div class="container">
+            <h2>Client Implementation Progress</h2>
+            <p class="section-subtitle">Track the implementation status across Ethereum clients</p>
+            <div class="clients-grid">
+                <div class="client-card">
+                    <div class="client-header">
+                        <img src="https://clientdiversity.org/assets/img/execution-clients/geth-logo.png" alt="Geth" class="client-logo">
+                        <h3>Geth</h3>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 40%"></div>
+                    </div>
+                    <div class="client-info">
+                        <span class="progress-text">Implementation in progress</span>
+                        <a href="https://github.com/ethereum/go-ethereum" target="_blank" class="github-link">
+                            <svg viewBox="0 0 16 16" width="16" height="16">
+                                <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="client-card">
+                    <div class="client-header">
+                        <img src="https://clientdiversity.org/assets/img/execution-clients/nethermind-text-logo.svg" alt="Nethermind" class="client-logo">
+                        <h3>Nethermind</h3>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 10%"></div>
+                    </div>
+                    <div class="client-info">
+                        <span class="progress-text">Not yet started</span>
+                        <a href="https://github.com/NethermindEth/nethermind" target="_blank" class="github-link">
+                            <svg viewBox="0 0 16 16" width="16" height="16">
+                                <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="client-card">
+                    <div class="client-header">
+                        <img src="https://clientdiversity.org/assets/img/consensus-clients/lighthouse-logo.png" alt="Erigon" class="client-logo">
+                        <h3>Erigon</h3>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 30%"></div>
+                    </div>
+                    <div class="client-info">
+                        <span class="progress-text">Implementation in progress</span>
+                        <a href="https://github.com/ledgerwatch/erigon" target="_blank" class="github-link">
+                            <svg viewBox="0 0 16 16" width="16" height="16">
+                                <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="client-card">
+                    <div class="client-header">
+                        <img src="https://clientdiversity.org/assets/img/execution-clients/besu-text-logo.png" alt="Besu" class="client-logo">
+                        <h3>Besu</h3>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 20%"></div>
+                    </div>
+                    <div class="client-info">
+                        <span class="progress-text">Implementation in progress</span>
+                        <a href="https://github.com/hyperledger/besu" target="_blank" class="github-link">
+                            <svg viewBox="0 0 16 16" width="16" height="16">
+                                <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="client-card">
+                    <div class="client-header">
+                        <img src="https://avatars.githubusercontent.com/u/97369466?s=200&v=4" alt="Reth" class="client-logo">
+                        <h3>Reth</h3>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 10%"></div>
+                    </div>
+                    <div class="client-info">
+                        <span class="progress-text">Implementation in progress</span>
+                        <a href="https://github.com/paradigmxyz/reth" target="_blank" class="github-link">
+                            <svg viewBox="0 0 16 16" width="16" height="16">
+                                <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Details Section -->
+    <section class="technical-section">
+        <div class="container">
+            <h2>How It Works</h2>
+            <div class="tech-content">
+                <div class="tech-explanation">
+                    <h3>Block Access Lists (BALs)</h3>
+                    <p>Every block includes a complete record of all state interactions:</p>
+                    <ul>
+                        <li><strong>Addresses:</strong> Every account touched during execution</li>
+                        <li><strong>Storage:</strong> All slots read or written, with final values</li>
+                        <li><strong>Balances:</strong> Post-transaction balances for all transfers</li>
+                        <li><strong>Nonces:</strong> Updated nonces for EOAs and contracts</li>
+                        <li><strong>Code:</strong> Deployed contract bytecode</li>
+                    </ul>
+                    <p>Key benefits for validators:</p>
+                    <ul>
+                        <li>Pre-load all required state data in parallel</li>
+                        <li>Execute independent transactions on different CPU cores</li>
+                        <li>Update state without re-executing transactions</li>
+                        <li>Validate blocks faster with known dependencies</li>
+                        <li>Calculate post-state root in parallel</li>
+                    </ul>
+                    <p>Cheatsheets for Validators:</p>
+                    <ul>
+                        <li>Builders keep track of touched accounts and storage slots during execution</li>
+                        <li>Builders create BALs and put them into blocks</li>
+                        <li>Validators can use BALs to validate blocks faster</li>
+                        <li>While the effort to generate BALs is low, the benefits for validators are high</li>
+                    </ul>
+                </div>
+                <div class="code-example">
+                    <h4>Simple Example: Alice sends ETH to Bob</h4>
+                    <pre><code>BlockAccessList(
+  account_changes=[
+    # Alice's account after sending 1 ETH
+    AccountChanges(
+      address=0xaaaa...,
+      balance_changes=[
+        BalanceChange(tx_index=0, post_balance=50 ETH)
+      ],
+      nonce_changes=[
+        NonceChange(tx_index=0, new_nonce=10)
+      ]
+    ),
+    # Bob's account after receiving 1 ETH
+    AccountChanges(
+      address=0xbbbb...,
+      balance_changes=[
+        BalanceChange(tx_index=0, post_balance=11 ETH)
+      ]
+    ),
+    # Coinbase gets transaction fees
+    AccountChanges(
+      address=0xeeee...,
+      balance_changes=[
+        BalanceChange(tx_index=0, post_balance=100.01 ETH)
+      ]
+    )
+  ]
+)</code></pre>
+                </div>
+            </div>
+            <div class="tech-stats">
+                <h3>Impact & Performance</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">~40 KiB</div>
+                        <div class="stat-label">Average BAL size (compressed)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">60-80%</div>
+                        <div class="stat-label">Transactions with no conflicts</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">8x</div>
+                        <div class="stat-label">Potential speedup with 8 cores</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">SSZ</div>
+                        <div class="stat-label">Efficient encoding format</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Posts Section -->
+    <section class="blog-section">
+        <div class="container">
+            <h2>Research & Updates</h2>
+            <p class="section-subtitle">Latest insights on Block-Level Access Lists</p>
+            <div class="blog-grid">
+                <article class="blog-card">
+                    <div class="blog-meta">
+                        <span class="blog-author">Toni Wahrstätter</span>
+                        <span class="blog-date">Research Post</span>
+                    </div>
+                    <h3>Block-Level Access Lists (BALs)</h3>
+                    <p>Exploring how BALs enable parallel transaction execution by providing comprehensive state access information at the block level.</p>
+                    <a href="https://ethresear.ch/t/block-level-access-lists-bals/22331" target="_blank" class="blog-link">
+                        Read More →
+                    </a>
+                </article>
+                <article class="blog-card">
+                    <div class="blog-meta">
+                        <span class="blog-author">Toni Wahrstätter</span>
+                        <span class="blog-date">Research Post</span>
+                    </div>
+                    <h3>Execution Dependencies</h3>
+                    <p>Deep dive into transaction dependencies and how understanding them unlocks efficient parallel processing capabilities.</p>
+                    <a href="https://ethresear.ch/t/execution-dependencies/22150" target="_blank" class="blog-link">
+                        Read More →
+                    </a>
+                </article>
+                <article class="blog-card">
+                    <div class="blog-meta">
+                        <span class="blog-author">Maria Silva</span>
+                        <span class="blog-date">Technical Note</span>
+                    </div>
+                    <h3>Implementation Details</h3>
+                    <p>Analyzing worst-case BAL sizes and how to generate them. This includes a detailed analysis of the worst-case BAL size for different scenarios, bloating different parts of the BAL.</p>
+                    <a href="https://notes.ethereum.org/@misilva/r1CyZf_Vlx" target="_blank" class="blog-link">
+                        Read More →
+                    </a>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section class="resources-section">
+        <div class="container">
+            <h2>Resources</h2>
+            <div class="resources-grid">
+                <a href="https://github.com/ethereum/EIPs/blob/master/EIPS/eip-7928.md" class="resource-card" target="_blank">
+                    <div class="resource-icon">📄</div>
+                    <h3>EIP Document</h3>
+                    <p>Read the full technical specification</p>
+                </a>
+                <a href="https://ethereum-magicians.org/t/eip-7928-block-level-access-lists/23337" class="resource-card" target="_blank">
+                    <div class="resource-icon">💬</div>
+                    <h3>Discussion Forum</h3>
+                    <p>Join the community discussion</p>
+                </a>
+                <a href="https://github.com/ethereum/execution-specs/pull/1338" class="resource-card" target="_blank">
+                    <div class="resource-icon">🔬</div>
+                    <h3>Execution Specs</h3>
+                    <p>Technical implementation details</p>
+                </a>
+                <a href="https://github.com/nerolation/eth-bal-analysis" class="resource-card" target="_blank">
+                    <div class="resource-icon">🛠️</div>
+                    <h3>Analysis Tools</h3>
+                    <p>Reference implementation and analysis</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Authors Section -->
+    <section class="authors-section">
+        <div class="container">
+            <h2>Authors</h2>
+            <div class="authors-list">
+                <div class="author">
+                    <span class="author-name">Toni Wahrstätter</span>
+                    <a href="https://github.com/nerolation" target="_blank">@nerolation</a>
+                </div>
+                <div class="author">
+                    <span class="author-name">Dankrad Feist</span>
+                    <a href="https://github.com/dankrad" target="_blank">@dankrad</a>
+                </div>
+                <div class="author">
+                    <span class="author-name">Francesco D'Amato</span>
+                    <a href="https://github.com/fradamt" target="_blank">@fradamt</a>
+                </div>
+                <div class="author">
+                    <span class="author-name">Jochem Brouwer</span>
+                    <a href="https://github.com/jochem-brouwer" target="_blank">@jochem-brouwer</a>
+                </div>
+                <div class="author">
+                    <span class="author-name">Ignacio Hagopian</span>
+                    <a href="https://github.com/jsign" target="_blank">@jsign</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>EIP-7928: Block-Level Access Lists | Status: Draft</p>
+            <p>Copyright and related rights waived via <a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank">CC0</a></p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
