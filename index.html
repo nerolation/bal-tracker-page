@@ -31,78 +31,37 @@
             <h2>From Sequential to Parallel</h2>
             <p class="section-subtitle">See how EIP-7928 transforms transaction processing</p>
             
-            <div class="viz-container">
-                <div class="viz-panel">
-                    <h3>Today: Sequential Processing</h3>
-                    <div class="sequential-viz" id="sequential-viz">
-                        <div class="timeline-container">
-                            <div class="processor-label">Single Core</div>
-                            <div class="timeline">
-                                <div class="tx-block" data-index="0">Tx 1</div>
-                                <div class="tx-block" data-index="1">Tx 2</div>
-                                <div class="tx-block" data-index="2">Tx 3</div>
-                                <div class="tx-block" data-index="3">Tx 4</div>
-                                <div class="tx-block" data-index="4">Tx 5</div>
-                                <div class="tx-block" data-index="5">Tx 6</div>
-                                <div class="tx-block" data-index="6">Tx 7</div>
-                                <div class="tx-block" data-index="7">Tx 8</div>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill sequential-progress"></div>
-                            </div>
+            <div class="morph-viz-container">
+                <h3 class="morph-title"><span class="title-static">Transaction Execution</span> <span class="time-period">Today</span></h3>
+                <div class="morph-chart" id="morph-chart">
+                    <div class="chart-grid">
+                        <!-- Y-axis labels -->
+                        <div class="y-axis">
+                            <div class="y-label">Tx 1</div>
+                            <div class="y-label">Tx 2</div>
+                            <div class="y-label">Tx 3</div>
+                            <div class="y-label">Tx 4</div>
                         </div>
-                        <div class="time-display">
-                            <span class="time-label">Time:</span>
-                            <span class="time-value" id="sequential-time">0s</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="viz-panel">
-                    <h3>With EIP-7928: Parallel Processing</h3>
-                    <div class="parallel-viz" id="parallel-viz">
-                        <div class="cores-container">
-                            <div class="core-row">
-                                <div class="processor-label">Core 1</div>
-                                <div class="core-timeline">
-                                    <div class="tx-block" data-core="1" data-index="0">Tx 1</div>
-                                    <div class="tx-block" data-core="1" data-index="1">Tx 5</div>
-                                </div>
+                        <!-- Chart area -->
+                        <div class="chart-area">
+                            <!-- Time axis -->
+                            <div class="x-axis">
+                                <div class="x-label">0s</div>
+                                <div class="x-label">1s</div>
+                                <div class="x-label">2s</div>
+                                <div class="x-label">3s</div>
+                                <div class="x-label">4s</div>
                             </div>
-                            <div class="core-row">
-                                <div class="processor-label">Core 2</div>
-                                <div class="core-timeline">
-                                    <div class="tx-block" data-core="2" data-index="0">Tx 2</div>
-                                    <div class="tx-block" data-core="2" data-index="1">Tx 6</div>
-                                </div>
-                            </div>
-                            <div class="core-row">
-                                <div class="processor-label">Core 3</div>
-                                <div class="core-timeline">
-                                    <div class="tx-block" data-core="3" data-index="0">Tx 3</div>
-                                    <div class="tx-block" data-core="3" data-index="1">Tx 7</div>
-                                </div>
-                            </div>
-                            <div class="core-row">
-                                <div class="processor-label">Core 4</div>
-                                <div class="core-timeline">
-                                    <div class="tx-block" data-core="4" data-index="0">Tx 4</div>
-                                    <div class="tx-block" data-core="4" data-index="1">Tx 8</div>
-                                </div>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill parallel-progress"></div>
-                            </div>
-                        </div>
-                        <div class="time-display">
-                            <span class="time-label">Time:</span>
-                            <span class="time-value" id="parallel-time">0s</span>
+                            <div class="x-axis-title">Execution Time</div>
+                            <!-- Transaction blocks -->
+                            <div class="morph-tx" data-tx="1" data-start="0" data-duration="1">Tx 1</div>
+                            <div class="morph-tx" data-tx="2" data-start="1" data-duration="1">Tx 2</div>
+                            <div class="morph-tx" data-tx="3" data-start="2" data-duration="1">Tx 3</div>
+                            <div class="morph-tx" data-tx="4" data-start="3" data-duration="1">Tx 4</div>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <button class="btn btn-animate" id="animate-btn">Animate Processing</button>
         </div>
     </section>
 
@@ -386,6 +345,17 @@
                     <h3>Design Exploration</h3>
                     <p>Analyzing a different, more lightweight BAL design that achieves perfect parallelization for most average blocks, but not for worst-cases.</p>
                     <a href="https://raxhvl.com/ethereum/diet-bal/#nutritional-info" target="_blank" class="blog-link">
+                        Read More →
+                    </a>
+                </article>
+                <article class="blog-card">
+                    <div class="blog-meta">
+                        <span class="blog-author">Rahul</span>
+                        <span class="blog-date">Progress Tracker</span>
+                    </div>
+                    <h3>Detailed Client Progress</h3>
+                    <p>Dive deeper into "where we are today?". The pages provide a tracker to follow progress on the EIP, from specs to production-ready implementation..</p>
+                    <a href="https://pokebal.raxhvl.com/" target="_blank" class="blog-link">
                         Read More →
                     </a>
                 </article>

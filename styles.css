@@ -704,7 +704,212 @@ code {
     }
 }
 
+/* Morphing Visualization Styles */
+.morph-viz-container {
+    background: white;
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
+    margin: 0 auto;
+    overflow: visible;
+}
+
+.morph-title {
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 40px;
+    color: var(--text-dark);
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.title-static {
+    flex-shrink: 0;
+}
+
+.time-period {
+    color: var(--primary-color);
+    font-weight: 700;
+    transition: color 0.5s ease;
+    display: inline-block;
+    width: 120px;
+    text-align: left;
+}
+
+.morph-chart {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.chart-grid {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 20px;
+}
+
+.y-axis {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 30px 0;
+}
+
+.y-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #666;
+    text-align: right;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.chart-area {
+    position: relative;
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    min-height: 300px;
+    width: 100%;
+    min-width: 700px;
+    overflow: visible;
+}
+
+.x-axis {
+    position: absolute;
+    bottom: -30px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.x-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #666;
+}
+
+.x-axis-title {
+    position: absolute;
+    bottom: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+}
+
+.morph-tx {
+    position: absolute;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    border-radius: 8px;
+    transition: all 2s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    opacity: 1;
+}
+
+.morph-tx[data-tx="1"] {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    top: 35px;
+}
+
+.morph-tx[data-tx="2"] {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    top: 95px;
+}
+
+.morph-tx[data-tx="3"] {
+    background: linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%);
+    top: 155px;
+}
+
+.morph-tx[data-tx="4"] {
+    background: linear-gradient(135deg, #FA709A 0%, #FEE140 100%);
+    top: 215px;
+}
+
+/* Sequential state (default) */
+.morph-tx[data-start="0"] { left: 20px; width: 150px; }
+.morph-tx[data-start="1"] { left: 190px; width: 150px; }
+.morph-tx[data-start="2"] { left: 360px; width: 150px; }
+.morph-tx[data-start="3"] { left: 530px; width: 150px; }
+
+/* Parallel state */
+.morph-chart.parallel .morph-tx {
+    width: 150px !important;
+    left: 20px !important;
+}
+
+.morph-tx:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+
 /* Responsive Design */
+@media (max-width: 768px) {
+    .morph-viz-container {
+        padding: 20px;
+    }
+    
+    .morph-title {
+        font-size: 20px;
+        gap: 6px;
+    }
+    
+    .time-period {
+        width: 90px;
+    }
+    
+    .chart-grid {
+        grid-template-columns: 60px 1fr;
+        gap: 10px;
+    }
+    
+    .chart-area {
+        min-width: auto;
+        overflow-x: auto;
+    }
+    
+    .morph-tx {
+        font-size: 12px;
+        height: 35px;
+    }
+    
+    .morph-tx[data-tx="1"] { top: 32px; }
+    .morph-tx[data-tx="2"] { top: 85px; }
+    .morph-tx[data-tx="3"] { top: 138px; }
+    .morph-tx[data-tx="4"] { top: 191px; }
+    
+    .morph-tx[data-start="0"] { left: 10px; width: 80px; }
+    .morph-tx[data-start="1"] { left: 100px; width: 80px; }
+    .morph-tx[data-start="2"] { left: 190px; width: 80px; }
+    .morph-tx[data-start="3"] { left: 280px; width: 80px; }
+    
+    .morph-chart.parallel .morph-tx {
+        width: 80px !important;
+        left: 10px !important;
+    }
+    
+    .x-axis {
+        padding: 0 10px;
+    }
+}
+
 @media (max-width: 768px) {
     .timeline {
         justify-content: center;

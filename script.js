@@ -39,126 +39,55 @@ const style = document.createElement('style');
 style.textContent = '.fade-in { opacity: 1 !important; transform: translateY(0) !important; }';
 document.head.appendChild(style);
 
-// Simple animation for transaction blocks
-function animateTransactions() {
-    // Reset all animations
-    const allBlocks = document.querySelectorAll('.tx-block');
-    const sequentialProgress = document.querySelector('.sequential-progress');
-    const parallelProgress = document.querySelector('.parallel-progress');
-    const sequentialTime = document.getElementById('sequential-time');
-    const parallelTime = document.getElementById('parallel-time');
+// Morphing animation for the new visualization
+function animateMorphingChart() {
+    const chart = document.getElementById('morph-chart');
+    const timePeriod = document.querySelector('.time-period');
     
-    // Reset states
-    allBlocks.forEach(block => {
-        block.classList.remove('processing', 'completed');
-    });
-    sequentialProgress.style.width = '0%';
-    parallelProgress.style.width = '0%';
-    sequentialTime.textContent = '0s';
-    parallelTime.textContent = '0s';
+    // Function to run the animation cycle
+    function runAnimation() {
+        // Start in sequential state
+        chart.classList.remove('parallel');
+        timePeriod.textContent = 'Today';
+        timePeriod.style.color = 'var(--primary-color)';
+        
+        // After 3 seconds, morph to parallel
+        setTimeout(() => {
+            chart.classList.add('parallel');
+            timePeriod.textContent = 'Tomorrow';
+            timePeriod.style.color = '#4ECDC4';
+        }, 3000);
+        
+        // After 6 seconds total, restart the cycle
+        setTimeout(() => {
+            runAnimation();
+        }, 6000);
+    }
     
-    // Animation timing
-    const txDuration = 500; // Each transaction takes 500ms
-    const totalTxCount = 8;
-    
-    // Sequential animation
-    const sequentialBlocks = document.querySelectorAll('#sequential-viz .tx-block');
-    let sequentialIndex = 0;
-    let sequentialStartTime = Date.now();
-    
-    const sequentialInterval = setInterval(() => {
-        if (sequentialIndex < sequentialBlocks.length) {
-            // Mark previous as completed
-            if (sequentialIndex > 0) {
-                sequentialBlocks[sequentialIndex - 1].classList.remove('processing');
-                sequentialBlocks[sequentialIndex - 1].classList.add('completed');
-            }
-            
-            // Process current
-            sequentialBlocks[sequentialIndex].classList.add('processing');
-            
-            // Update progress
-            const progress = ((sequentialIndex + 1) / totalTxCount) * 100;
-            sequentialProgress.style.width = progress + '%';
-            
-            // Update time
-            const elapsed = ((Date.now() - sequentialStartTime) / 1000).toFixed(1);
-            sequentialTime.textContent = elapsed + 's';
-            
-            sequentialIndex++;
-        } else {
-            // Mark last as completed
-            sequentialBlocks[sequentialBlocks.length - 1].classList.remove('processing');
-            sequentialBlocks[sequentialBlocks.length - 1].classList.add('completed');
-            clearInterval(sequentialInterval);
-        }
-    }, txDuration);
-    
-    // Parallel animation - process columns (first column, then second column)
-    const parallelBlocks = document.querySelectorAll('#parallel-viz .tx-block');
-    let parallelColumn = 0;
-    let parallelStartTime = Date.now();
-    const coresCount = 4;
-    
-    const parallelInterval = setInterval(() => {
-        if (parallelColumn < 2) {
-            // Process blocks in current column (all cores simultaneously)
-            for (let core = 0; core < coresCount; core++) {
-                const coreBlocks = document.querySelectorAll(`#parallel-viz .tx-block[data-core="${core + 1}"]`);
-                if (parallelColumn < coreBlocks.length) {
-                    // Mark previous column as completed
-                    if (parallelColumn > 0) {
-                        coreBlocks[parallelColumn - 1].classList.remove('processing');
-                        coreBlocks[parallelColumn - 1].classList.add('completed');
-                    }
-                    
-                    // Process current column
-                    coreBlocks[parallelColumn].classList.add('processing');
-                }
-            }
-            
-            // Update progress
-            const completedCount = Math.min((parallelColumn + 1) * coresCount, totalTxCount);
-            const progress = (completedCount / totalTxCount) * 100;
-            parallelProgress.style.width = progress + '%';
-            
-            // Update time
-            const elapsed = ((Date.now() - parallelStartTime) / 1000).toFixed(1);
-            parallelTime.textContent = elapsed + 's';
-            
-            parallelColumn++;
-        } else {
-            // Mark last column as completed
-            for (let core = 0; core < coresCount; core++) {
-                const coreBlocks = document.querySelectorAll(`#parallel-viz .tx-block[data-core="${core + 1}"]`);
-                if (coreBlocks.length > 1) {
-                    coreBlocks[1].classList.remove('processing');
-                    coreBlocks[1].classList.add('completed');
-                }
-            }
-            clearInterval(parallelInterval);
-        }
-    }, txDuration);
+    // Start the animation cycle
+    runAnimation();
 }
 
-// Animate button click handler
-document.getElementById('animate-btn').addEventListener('click', animateTransactions);
+
 
 // Auto-animate on first view
 const vizSection = document.querySelector('.visualization-section');
 const vizObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            setTimeout(animateTransactions, 500);
+            // Start morphing animation immediately
+            animateMorphingChart();
             vizObserver.unobserve(entry.target);
         }
     });
-}, { threshold: 0.5 });
+}, { threshold: 0.3 });
 
-vizObserver.observe(vizSection);
+if (vizSection) {
+    vizObserver.observe(vizSection);
+}
 
-// Add hover effects to transaction blocks
-document.querySelectorAll('.tx-block').forEach(block => {
+// Add hover effects to old transaction blocks (not morph ones)
+document.querySelectorAll('.tx-block:not(.morph-tx)').forEach(block => {
     block.addEventListener('mouseenter', function() {
         this.style.transform = 'translateX(0) scale(1.05)';
     });
