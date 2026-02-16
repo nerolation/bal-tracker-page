@@ -32,8 +32,6 @@
     
     /* Layout */
     .container {
-      display: grid;
-      grid-template-columns: 260px 1fr;
       min-height: 100vh;
     }
     
@@ -91,9 +89,9 @@
     
     /* Main content */
     main {
-      grid-column: 2;
+      margin-left: 260px;
       padding: 48px 64px;
-      max-width: 900px;
+      max-width: 1100px;
     }
     
     .ai-notice {
@@ -286,10 +284,6 @@
     
     /* Responsive */
     @media (max-width: 900px) {
-      .container {
-        grid-template-columns: 1fr;
-      }
-      
       nav {
         position: sticky;
         top: 0;
@@ -318,6 +312,7 @@
       }
       
       main {
+        margin-left: 0;
         padding: 20px 16px;
       }
       
